@@ -6,4 +6,4 @@ import 'package:translation/src/translation_generator.dart';
 Builder keysBuilder(BuilderOptions options) => LibraryBuilder(KeysGenerator());
 
 Builder translationBuilder(BuilderOptions options) =>
-    LibraryBuilder(TranslationGenerator());
+    SharedPartBuilder([TranslationGenerator()],"translation");

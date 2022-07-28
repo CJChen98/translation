@@ -1,24 +1,11 @@
 builders:
-#  keysBuilder:
-#    # library URI containing the builder - maps to `lib/member_count_library_generator.dart`
-#    import: "package:translation/builders.dart"
-#    # Name of the function in the above library to call.
-#    builder_factories: [ "keysBuilder" ]
-#    # The mapping from the source extension to the generated file extension
-#    build_extensions: { ".dart": [ ".g.dart" ] }
-#    # Will automatically run on any package that depends on it
-#    auto_apply: dependents
-#    # Generate the output directly into the package, not to a hidden cache dir
-#    build_to: source
 
   translationBuilder:
-    # library URI containing the builder - maps to `lib/member_count_library_generator.dart`
+    target: ":translation"
     import: "package:translation/builders.dart"
-    # Name of the function in the above library to call.
     builder_factories: [ "translationBuilder" ]
-    # The mapping from the source extension to the generated file extension
-    build_extensions: { ".dart": [ ".g.dart" ] }
-    # Will automatically run on any package that depends on it
+    build_extensions: { ".dart": [ "translation.g.part" ] }
     auto_apply: dependents
-    # Generate the output directly into the package, not to a hidden cache dir
-    build_to: source
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
+    runs_before: ['fair_compiler']

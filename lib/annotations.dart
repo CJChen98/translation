@@ -1,9 +1,10 @@
 library translation;
 
 class Translation {
-  final String to;
+  final List<String> to;
+  final String from;
 
-  const Translation({required this.to});
+  const Translation({required this.from, required this.to});
 }
 
 class From {
