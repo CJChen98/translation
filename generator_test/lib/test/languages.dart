@@ -1,8 +1,8 @@
 import 'package:generator_test/test/string_id.dart';
 import 'package:translation/annotations.dart';
 
-part 'languages.g.dart';
-@Translation(from: 'zh', to: ['en', 'fr', 'ge','tr'])
+// part 'languages.g.dart';
+// @Translation(name:"测试",from: 'zh', to: ['en', 'fr', 'ge','tr'])
 const Map _map = {
   SId.title: "标题",
   SId.appName: "测试",

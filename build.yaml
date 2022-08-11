@@ -7,5 +7,17 @@ builders:
     build_extensions: { ".dart": [ "translation.g.part" ] }
     auto_apply: dependents
     build_to: cache
+
     applies_builders: ["source_gen|combining_builder"]
-    runs_before: ['fair_compiler']
+    runs_before: ['fairc']
+
+  convertBuilder:
+    target: ":translation"
+    import: "package:translation/builders.dart"
+    builder_factories: [ "convertBuilder" ]
+    build_extensions: { ".dart": [ ".dart.back"] }
+    auto_apply: dependents
+    build_to: cache
+    defaults:
+      generate_for:
+        exclude: ['**.g.dart']

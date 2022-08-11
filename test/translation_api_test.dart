@@ -6,8 +6,9 @@ import 'package:translation/src/network/translation_api.dart';
 void main() {
   final api = TranslationApi();
   test('adds one to input values', () async {
-    // final result = await api.translate({"string_hello":"你好"}, "en");
+    final result = await api.translate({"string_hello":"你好"}, "en");
     print(convertToDart({"string_hello": "你好"}, "en"));
+    print(result);
   });
 }
 

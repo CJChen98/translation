@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:code_builder/code_builder.dart';
@@ -8,6 +9,7 @@ import 'package:translation/src/network/translation_api.dart';
 
 class TranslationGenerator extends GeneratorForAnnotation<Translation> {
   final api = TranslationApi();
+  final Map<String, Map<String, String>> _map = {};
 
   @override
   generateForAnnotatedElement(
@@ -15,12 +17,16 @@ class TranslationGenerator extends GeneratorForAnnotation<Translation> {
     var str = "";
     try {
       if (element is TopLevelVariableElement) {
-
         final data =
             element.computeConstantValue()!.toMapValue()!.map((key, value) {
-          return MapEntry(key!.getField("_name")!.toStringValue()!,
+          if(key?.type?.element?.kind != ElementKind.ENUM){
+            throw TypeError();
+          }
+          final enumKey= key!.type!.getDisplayString(withNullability: false)+".${key.getField("_name")?.toStringValue()!}";
+          return MapEntry(enumKey,
               value!.toStringValue()!);
         });
+
         final tos = annotation
             .read("to")
             .listValue
@@ -54,14 +60,14 @@ class TranslationGenerator extends GeneratorForAnnotation<Translation> {
     String code = data.entries
         .map((e) => "\"${e.key}\":\"${e.value.replaceAll("\n", "\\n")}\"")
         .join(",\n");
-    final l = Library((b) => b.body.add(Field((f) => f
+    final l = Field((f) => f
       ..type = TypeReference((t) => t.symbol = "Map<String,String>")
       ..name = to
       ..assignment = Block.of([
         const Code("{"),
         lazyCode(() => refer(code).code),
         const Code("}"),
-      ]))));
+      ]));
     return "// $to \n" +
         DartFormatter().format('const ${l.accept(emitter)}') +
         "\n";
